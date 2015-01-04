@@ -1,0 +1,11 @@
+1. clear的时候，需要加全局写锁，
+2. 小心加锁别漏了
+3. 先比较hash，再比较key，
+4. 尽量减少次数，计算hash、比较key的代价可能非常高
+
+错错错！
+clear是clear、dispose是dispose，两者不能混淆。dispose后，集合不保证能够继续使用，比如哈希表
+也可以不这样，哈希表使用懒惰法读取segmentArray即可
+
+4. 全局写锁管理版本交换、rawtable结构性的变化，write函数；全局读锁管理rawtable的非结构性访问，所有write设计的，包括Formatter队列
+这同步机制还是太复杂，Formatter队列应该简化才是，但是简化也有简化的问题，比如不能及时更新版本
